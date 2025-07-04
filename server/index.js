@@ -8,6 +8,10 @@ import authRoutes from './routes/authRoutes.js';
 import resumeRoutes from './routes/resumeRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 
+// --- NEW IMPORTS FOR PRODUCTION DEPLOYMENT ---
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 dotenv.config();
 connectDB();
 
@@ -23,14 +27,38 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.get('/', (req, res) => {
-    res.send('ResumePro API is running...');
-});
-
+// --- API ROUTES ---
+// All your API routes must be here, BEFORE the frontend serving logic
 app.use('/api/auth', authRoutes);
 app.use('/api/resumes', resumeRoutes);
 app.use('/api/upload', uploadRoutes);
 
+
+// =================================================================
+// --- SERVE FRONTEND IN PRODUCTION ---
+// =================================================================
+
+// Get the directory name of the current module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+if (process.env.NODE_ENV === 'production') {
+  // Set the client/dist folder as a static folder
+  app.use(express.static(path.join(__dirname, '../client/dist')));
+
+  // For any route that is not an API route, serve the index.html from the build folder
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, '../', 'client', 'dist', 'index.html'))
+  );
+} else {
+  // If not in production, just have a simple root route for API testing
+  app.get('/', (req, res) => {
+    res.send('ResumePro API is running in development mode...');
+  });
+}
+// =================================================================
+
+// --- ERROR MIDDLEWARE (must be last) ---
 app.use(notFound);
 app.use(errorHandler);
 
