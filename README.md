@@ -74,4 +74,4 @@ Welcome to ResumePro! A full-stack, production-ready web application similar to 
     - **Environment Variables**: Add all the variables from your `.env` file to the Render environment settings. Ensure `NODE_ENV` is set to `production`.
 5.  Deploy! Render will automatically install dependencies for both `client` and `server` and run the build script.
 
----
+--- 
