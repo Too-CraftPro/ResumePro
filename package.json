@@ -1,7 +1,12 @@
+{
+  "name": "resumepro-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Main project file for ResumePro",
   "scripts": {
-    "server": "npm run dev --prefix server",
-    "client": "npm run dev --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "npm install --prefix client && npm run build --prefix client",
-    "start": "npm start --prefix server"
+    "server": "npm start --prefix server",
+    "client": "npm run dev --prefix client"
   },
+  "author": "",
+  "license": "ISC"
+}
